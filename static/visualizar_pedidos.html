@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <title>Pedidos</title>
+    <style>
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgb(0, 0, 0); 
+            background-color: rgba(0, 0, 0, 0.4); 
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; 
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; 
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Pedidos</h1>
+        <table id="tabela-pedidos">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Setor</th>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Data de Entrega</th>
+                    <th>Status</th>
+                    <th>Observação</th>
+                    <th>Responsável pela Compra</th>
+                    <th>Ações</th> 
+                </tr>
+            </thead>
+            <tbody id="corpo-tabela">
+    
+            </tbody>
+        </table>
+    </div>
+
+    <div id="modalEditar" class="modal">
+        <div class="modal-content">
+            <span class="close" id="fecharModal">&times;</span>
+            <h2>Editar Pedido</h2>
+            <form id="editarPedidoForm">
+                <div class="form-group">
+                    <label for="setor">Setor</label>
+                    <input type="text" id="setor" name="setor" required>
+                </div>
+                <div class="form-group">
+                    <label for="produto">Produto</label>
+                    <input type="text" id="produto" name="produto" required>
+                </div>
+                <div class="form-group">
+                    <label for="quantidade">Quantidade</label>
+                    <input type="number" id="quantidade" name="quantidade" required min="1">
+                </div>
+                <div class="form-group">
+                    <label for="data_entrega">Data para Entrega</label>
+                    <input type="date" id="data_entrega" name="data_entrega" required>
+                </div>
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" name="status" required>
+                        <option value="Pendente">Pendente</option>
+                        <option value="Concluído">Concluído</option>
+                        <option value="Cancelado">Cancelado</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="observacao">Observação</label>
+                    <input type="text" id="observacao" name="observacao">
+                </div>
+                <div class="form-group">
+                    <label for="responsavel_compra">Responsável pela Compra</label>
+                    <input type="text" id="responsavel_compra" name="responsavel_compra" required>
+                </div>
+                <button type="submit">ATUALIZAR PEDIDO</button>
+                <div id="message" class="message"></div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/js/scripts.js"></script>
+    <script>
+        async function carregarPedidos() {
+            const response = await fetch('/pedidos/');
+            const pedidos = await response.json();
+            const corpoTabela = document.getElementById('corpo-tabela');
+            corpoTabela.innerHTML = ''; 
+
+            pedidos.forEach(pedido => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${pedido.id}</td>
+                    <td>${pedido.setor}</td>
+                    <td>${pedido.produto}</td>
+                    <td>${pedido.quantidade}</td>
+                    <td>${pedido.data_entrega}</td>
+                    <td>${pedido.status}</td>
+                    <td>${pedido.observacao}</td>
+                    <td>${pedido.responsavel_compra}</td>
+                    <td>
+                        <button onclick="editarPedido(${pedido.id})">Editar</button>
+                    </td>
+                `;
+                corpoTabela.appendChild(tr);
+            });
+        }
+
+        const modal = document.getElementById("modalEditar");
+        const btnFechar = document.getElementById("fecharModal");
+
+        async function editarPedido(pedidoId) {
+            const response = await fetch(`/pedidos/${pedidoId}`);
+            const pedido = await response.json();
+            document.getElementById('setor').value = pedido.setor;
+            document.getElementById('produto').value = pedido.produto;
+            document.getElementById('quantidade').value = pedido.quantidade;
+            document.getElementById('data_entrega').value = pedido.data_entrega;
+            document.getElementById('status').value = pedido.status;
+            document.getElementById('observacao').value = pedido.observacao;
+            document.getElementById('responsavel_compra').value = pedido.responsavel_compra;
+
+            modal.style.display = "block";
+        }
+
+        document.getElementById('editarPedidoForm').onsubmit = async function(event) {
+            event.preventDefault(); 
+
+            const pedidoId = document.getElementById('setor').value; 
+            const pedidoAtualizado = {
+                setor: document.getElementById('setor').value,
+                produto: document.getElementById('produto').value,
+                quantidade: parseInt(document.getElementById('quantidade').value),
+                data_entrega: document.getElementById('data_entrega').value,
+                status: document.getElementById('status').value,
+                observacao: document.getElementById('observacao').value,
+                responsavel_compra: document.getElementById('responsavel_compra').value,
+            };
+
+            const response = await fetch(`/pedidos/${pedidoId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(pedidoAtualizado),
+            });
+
+            if (response.ok) {
+                const messageDiv = document.getElementById('message');
+                messageDiv.innerText = 'Pedido atualizado com sucesso!';
+                messageDiv.style.color = 'green';
+
+                carregarPedidos();
+
+                modal.style.display = "none";
+            } else {
+                const messageDiv = document.getElementById('message');
+                messageDiv.innerText = 'Erro ao atualizar o pedido.';
+                messageDiv.style.color = 'red';
+            }
+        };
+
+        btnFechar.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        carregarPedidos();
+    </script>
+</body>
+</html>

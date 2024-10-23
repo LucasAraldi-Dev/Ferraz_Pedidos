@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <title>Pedidos</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Pedidos</h1>
+        <table id="tabela-pedidos">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Setor</th>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Data de Entrega</th>
+                    <th>Status</th>
+                    <th>Observação</th>
+                    <th>Responsável pela Compra</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="corpo-tabela">
+                <!-- Espaço para as linhas da tabela que serão inseridas -->
+            </tbody>
+        </table>
+    </div>
+
+    <div id="modalEditar" class="modal">
+        <div class="modal-content">
+            <span class="close" id="fecharModal">&times;</span>
+            <h2>Editar Pedido</h2>
+            
+            <div class="pedido-id" id="pedido-id">
+                Pedido N  <span id="pedido-id-value"></span>
+            </div>
+            <input type="hidden" id="pedido-id"> <!-- Campo oculto para o ID do pedido -->
+
+            <form id="editarPedidoForm">
+                <div class="form-group">
+                    <label for="setor">Setor</label>
+                    <input type="text" id="setor" name="setor" required>
+                </div>
+                <div class="form-group">
+                    <label for="produto">Produto</label>
+                    <input type="text" id="produto" name="produto" required>
+                </div>
+                <div class="form-group">
+                    <label for="quantidade">Quantidade</label>
+                    <input type="number" id="quantidade" name="quantidade" required min="1">
+                </div>
+                <div class="form-group">
+                    <label for="data_entrega">Data de Entrega</label>
+                    <input type="date" id="data_entrega" name="data_entrega" required>
+                </div>
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" name="status" required>
+                        <option value="Pendente">Pendente</option>
+                        <option value="Concluído">Concluído</option>
+                        <option value="Cancelado">Cancelado</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="observacao">Observação</label>
+                    <input type="text" id="observacao" name="observacao">
+                </div>
+                <div class="form-group">
+                    <label for="responsavel_compra">Responsável pela Compra</label>
+                    <input type="text" id="responsavel_compra" name="responsavel_compra" required>
+                </div>
+                <button type="submit">Salvar Alterações</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/static/js/scripts.js"></script>
+</body>
+</html>

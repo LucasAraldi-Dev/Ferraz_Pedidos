@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Cadastro</title>
+    <link rel="stylesheet" href="./css/register-styles.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="./favicon_logo_branco.png" alt="Logo">
+        </div>
+    </header>
+
+    <main>
+        <section class="register-section">
+            <h2>Cadastro</h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="name">Nome:</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Senha:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn-primary">Registrar</button>
+            </form>
+            <p id="register-message"></p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 AraldiTech. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="./js/register-scripts.js"></script>
+</body>
+</html>

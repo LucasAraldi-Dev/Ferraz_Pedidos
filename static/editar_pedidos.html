@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/editar_pedidos.css">
+    <title>Editar Pedido</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Editar Pedido <span id="pedido-id"></span></h1> <!-- O ID do pedido será exibido aqui -->
+        <form id="editPedidoForm">
+            <input type="hidden" id="pedidoId" name="id"> <!-- O ID do pedido será armazenado aqui -->
+            <div class="form-group">
+                <label for="setor">Setor</label>
+                <input type="text" id="setor" name="setor" required>
+            </div>
+            <div class="form-group">
+                <label for="produto">Produto</label>
+                <input type="text" id="produto" name="produto" required>
+            </div>
+            <div class="form-group">
+                <label for="quantidade">Quantidade</label>
+                <input type="number" id="quantidade" name="quantidade" required min="1">
+            </div>
+            <div class="form-group">
+                <label for="data_entrega">Data para Entrega</label>
+                <input type="date" id="data_entrega" name="data_entrega" required>
+            </div>
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select id="status" name="status" required>
+                    <option value="Pendente">Pendente</option>
+                    <option value="Concluído">Concluído</option>
+                    <option value="Cancelado">Cancelado</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="observacao">Observação</label>
+                <input type="text" id="observacao" name="observacao">
+            </div>
+            <div class="form-group">
+                <label for="responsavel_compra">Responsável pela Compra</label>
+                <input type="text" id="responsavel_compra" name="responsavel_compra" required>
+            </div>
+            <button type="submit">Salvar Alterações</button>
+        </form>
+        <p id="message"></p> <!-- Mensagem de sucesso ou erro -->
+    </div>
+    
+
+    <script src="/static/js/editar_pedidos.js"></script>
+</body>
+</html>
